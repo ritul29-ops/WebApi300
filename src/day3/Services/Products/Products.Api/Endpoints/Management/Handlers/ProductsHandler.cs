@@ -16,7 +16,7 @@ public class ProductsHandler
 
         if (info is not null) return info;
 
-        var userId = Guid.NewGuid();
+        var userId = Guid.NewGuid(); 
         session.Events.StartStream(userId, new ProductUserCreated(userId, sub));
         await session.SaveChangesAsync();
         return new UserInfo
@@ -26,6 +26,8 @@ public class ProductsHandler
         };
     }
 
+
+    // POST endpoint is the source of this command
     public StreamAction Handle(CreateProduct command, IDocumentSession session, UserInfo userInfo)
     {
         var (id, name, price, qty) = command;

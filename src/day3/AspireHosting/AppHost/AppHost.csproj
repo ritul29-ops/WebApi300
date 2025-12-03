@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UserSecretsId>791c15ab-fa1a-4fa2-83a0-ee85696641f3</UserSecretsId>
+		<AssemblyName>Shopping Stuff Development</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

@@ -22,7 +22,7 @@ var identity = builder.AddMockOidcDevelopmentServer();
 
 var scalarApis = builder.AddScalarApiReference("scalar-apis", 9561, options =>
     {
-        options.DisableDefaultProxy();
+        options.DisableDefaultProxy(); // This means you have to enable Cors on your apis.
         options.PreferHttpsEndpoint();
         options.PersistentAuthentication = true;
         options.AllowSelfSignedCertificates();

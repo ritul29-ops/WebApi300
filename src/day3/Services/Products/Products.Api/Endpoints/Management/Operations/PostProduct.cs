@@ -16,7 +16,10 @@ public static class PostProduct
     )
     {
         var command = new CreateProduct(Guid.NewGuid(), request.Name, request.Price, request.Qty);
-        await messaging.InvokeAsync(command);
+      
+        await messaging.InvokeAsync(command); // Blocks until that command returns.
+        // I want to return the "Real" product details here.
+        // I want to be able to query the database for the current state of this product you just added.
         var response = await session.Events.FetchLatest<ProductDetails>(command.Id)!;
         return TypedResults.Ok(response);
     }

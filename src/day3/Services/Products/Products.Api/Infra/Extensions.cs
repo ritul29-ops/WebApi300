@@ -42,6 +42,7 @@ public static class Extensions
             {
                 corsOptions.AddPolicy(CorsPolicyName, pol =>
                 {
+                  
                     pol.WithOrigins("http://localhost:9561", "http://localhost");
                     pol.AllowAnyHeader();
                     pol.AllowAnyMethod();

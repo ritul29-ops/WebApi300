@@ -15,7 +15,7 @@ builder.Services.AddAuthorizationAndPolicies();
 builder.AddPersistenceAndMessaging("products");
 
 var app = builder.Build();
-app.UseCors();
+app.UseCors(); // This! This is for using Scalar 
 
 app.UseStatusCodePages();
 
