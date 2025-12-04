@@ -8,6 +8,7 @@ using Products.Api.Endpoints.Management.Handlers;
 using Products.Api.Endpoints.Management.ReadModels;
 using Products.Api.Messaging;
 using Wolverine;
+using Wolverine.Kafka;
 using Wolverine.Marten;
 using Wolverine.Transports.Tcp;
 
@@ -24,6 +25,11 @@ public static class Extensions
             builder.AddNpgsqlDataSource(dataSourceName);
             builder.Host.UseWolverine((options) =>
             {
+                options.UseKafka("localhost:9092");
+                options.PublishMessage<OrdersApiProductDocument>()
+                .ToKafkaTopic("shopping.products")
+             
+                .PublishRawJson();
                 options.Discovery.IncludeAssembly(typeof(OrderDocumentHandlers).Assembly);
                 options.Policies.AutoApplyTransactions();
                 //hey, send that any of those CreateProduct commands elsewhere.
@@ -113,7 +119,7 @@ public static class Extensions
     {
         public string? CallersSubject
         {
-            get { return accessor.HttpContext?.User.FindFirst(c => c.Type == "sub")?.Value!; }
+            get { return accessor.HttpContext?.User.FindFirst(c => c.Type == "sub")?.Value; }
         }
     }
 }

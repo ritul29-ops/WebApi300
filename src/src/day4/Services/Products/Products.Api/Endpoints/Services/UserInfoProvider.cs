@@ -32,8 +32,22 @@ public class UserInfoProvider(IDocumentSession session, IHttpContextAccessor htt
 
     public async Task<UserInfo?> GetUserInfoFromSubAsync(string sub)
     {
-        var info = await session.Query<UserInfo>().Where(u => u.Sub == sub).SingleOrDefaultAsync();
+        var userSaved =  await session.Query<UserInfo>().Where(u => u.Sub == sub).SingleOrDefaultAsync();
+        if (userSaved is not null) return userSaved;
+        var user = httpContextAccessor.HttpContext?.User;
+        
 
-        return info;
+       
+
+        var userId = Guid.NewGuid();
+        session.Events.StartStream(userId, new UserCreated(userId, sub));
+        await session.SaveChangesAsync();
+        return new UserInfo
+        {
+            Id = userId,
+            Sub = sub
+        };
     }
+
+   
 }

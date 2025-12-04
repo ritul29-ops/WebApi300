@@ -1,7 +1,10 @@
-using System.Reflection;
+using Confluent.Kafka;
 using Marten;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Products.Api.Messaging;
+using System.Reflection;
 using Wolverine;
+using Wolverine.Kafka;
 using Wolverine.Marten;
 
 namespace Orders.Api.Infra;
@@ -19,7 +22,19 @@ public static class Extensions
             builder.Host.UseWolverine((options) =>
             {
                 options.Policies.AutoApplyTransactions();
-                options.Policies.AutoApplyTransactions();
+
+                // Hard coded connection string are Bad, mmmkay?
+
+                options.UseKafka("localhost:9092").ConfigureConsumers(consumer =>
+                {
+                    consumer.GroupId = "order-api"; // "Consumer Groups"
+                                                     //consumer.AutoOffsetReset = AutoOffsetReset.Earliest; // earliest means give me all the messages (me being "api-client") that haven't been processed yet since the last time I was around.
+
+                    consumer.AutoOffsetReset = AutoOffsetReset.Earliest; 
+                });
+
+
+                options.ListenToKafkaTopic("shopping.products").ReceiveRawJson<OrdersApiProductDocument>();
             });
 
             builder.Services.AddMarten(options => { })

@@ -5,6 +5,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 #region Ambient Services (Services that are developer environment stuff)
 
+
+
+var kafka = builder.AddKafka("broker", 9092)
+    .WithKafkaUI(config =>
+    {
+        config.WithLifetime(ContainerLifetime.Persistent);
+    })
+    .WithLifetime(ContainerLifetime.Persistent);
 // this is a classroom concession to show stuff.
 var username = builder.AddParameter("username", "user");
 var password = builder.AddParameter("password", "password");

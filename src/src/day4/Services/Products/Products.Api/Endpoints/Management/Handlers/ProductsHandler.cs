@@ -7,12 +7,16 @@ using Wolverine;
 
 namespace Products.Api.Endpoints.Management.Handlers;
 
+public record SendProductToOrders(Guid Id);
+
+// Sort of the same - but this is to indicate that that product is no longer available.
+public record SendTombstoneProductToOrders(Guid Id);
 public class ProductsHandler
 {
-    public record SendProductToOrders(Guid Id);
+    // whenever the criteria of a thing WE own changes in a way Orders needs, do this.
 
-    public record SendTombstoneProductToOrders(Guid Id);
 
+    // before
     // POST endpoint is the source of this command
     public async Task<StreamAction> Handle(CreateProduct command, IDocumentSession session,
         IProvideUserInfo userProvider)
@@ -38,6 +42,10 @@ public class ProductsHandler
         session.Events.Append(command.Id, new ProductQtyDecreased(command.Id, command.Decrease));
     }
 
+
+    // After magic.
+    // Ok, I met with the orders folks,
+    // after we do our thing (using events and all that), here's what they seem to care about.
     public ValueTask After(IMessageContext context) =>
         context.Envelope?.Message switch
         {

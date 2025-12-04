@@ -10,13 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.0.1"/>
-        <PackageReference Include="Scalar.Aspire" Version="0.7.4"/>
+        <PackageReference Include="Aspire.Hosting.Kafka" Version="13.0.2" />
+        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.0.2" />
+        <PackageReference Include="Scalar.Aspire" Version="0.8.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Services\Orders\Orders.Api\Orders.Api.csproj"/>
-        <ProjectReference Include="..\..\Services\Products\Products.Api\Products.Api.csproj"/>
+        <ProjectReference Include="..\..\Services\Orders\Orders.Api\Orders.Api.csproj" />
+        <ProjectReference Include="..\..\Services\Products\Products.Api\Products.Api.csproj" />
     </ItemGroup>
 
 </Project>
