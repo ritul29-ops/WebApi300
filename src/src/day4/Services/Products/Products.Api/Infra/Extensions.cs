@@ -26,7 +26,7 @@ public static class Extensions
             {
                 options.Discovery.IncludeAssembly(typeof(OrderDocumentHandlers).Assembly);
                 options.Policies.AutoApplyTransactions();
-
+                //hey, send that any of those CreateProduct commands elsewhere.
 
                 Console.WriteLine(options.DescribeHandlerMatch(typeof(OrderDocumentHandlers)));
             }); // have to change the mode for this.
